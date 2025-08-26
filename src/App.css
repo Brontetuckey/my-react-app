@@ -1,42 +1,185 @@
-#root {
+/* Root container */
+.app-container {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 2rem 4rem;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* App title */
+.app-title {
+  color: #4b0082;
+  font-size: 3rem;
+  margin-bottom: 40px;
+}
+
+/* Two-column layout */
+.main-content {
+  display: flex;
+  justify-content: center; /* center columns horizontally */
+  align-items: flex-start;
+  gap: 50px;
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+}
+
+/* Left and right columns */
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px; /* keeps columns balanced */
+}
+
+/* H2 titles for Results and Playlist */
+.left-column h2,
+.right-column h2,
+.playlist h2,
+.search-results h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #4b0082;
+  text-align: center;
+  color: white;
+}
+
+/* SearchBar */
+.search-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 5px;
+  font-size: 1rem;
+  min-width: 150px;
+}
+
+.search-button {
+  flex: 0 0 120px;
+  padding: 8px 0;
+  font-size: 1rem;
+  background-color: #4b0082;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-button:hover {
+  background-color: #3a0066;
+}
+
+/* Playlist */
+.playlist {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5px;
+}
+
+/* Playlist header: input + save button in same row */
+.playlist-header {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.playlist-input {
+  flex: 1;
+  padding: 5px;
+  font-size: 1rem;
+  min-width: 150px;
+}
+
+.playlist-save-button {
+  flex: 0 0 120px;
+  padding: 8px 0;
+  font-size: 1rem;
+  background-color: #4b0082;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.playlist-save-button:hover {
+  background-color: #3a0066;
+}
+
+.playlist-save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* SearchResults */
+.search-results {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+/* Tracklist: scrollable */
+.tracklist {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Individual track rows */
+.track-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.track-row:last-child {
+  border-bottom: none;
+}
+
+/* Track add/remove buttons */
+.track-button {
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
+  background-color: #4b0082;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;           
+  align-items: center;      
+  justify-content: center;  
+}
+
+.track-button:hover {
+  background-color: #3a0066;
+}
+
+/* Spotify login section */
+.spotify-login-section {
+  margin-top: 40px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.spotify-login-section p {
+  margin-top: 10px;
+  color: gray;
 }
