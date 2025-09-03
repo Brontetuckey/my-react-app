@@ -7,56 +7,73 @@ import "./App.css";
 
 export default function App() {
   const [searchResults, setSearchResults] = useState([]);
-  const [playlistName, setPlaylistName] = useState("My Playlist");
+  const [playlistName, setPlaylistName] = useState("");
   const [playlistTracks, setPlaylistTracks] = useState([]);
   const [token, setToken] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
-  // On mount, get access token
+  // Restore playlist state from localStorage
+  useEffect(() => {
+    const savedName = localStorage.getItem("playlistName");
+    const savedTracks = JSON.parse(localStorage.getItem("playlistTracks")) || [];
+    if (savedName) setPlaylistName(savedName);
+    if (savedTracks.length) setPlaylistTracks(savedTracks);
+  }, []);
+
+  // Persist playlist state to localStorage
+  useEffect(() => {
+    localStorage.setItem("playlistName", playlistName);
+    localStorage.setItem("playlistTracks", JSON.stringify(playlistTracks));
+  }, [playlistName, playlistTracks]);
+
+  // Get token on load
   useEffect(() => {
     const init = async () => {
       const accessToken = await Spotify.getAccessToken();
       if (accessToken) setToken(accessToken);
+
+      // Restore last search after redirect
+      const lastSearch = localStorage.getItem("lastSearch");
+      if (lastSearch) {
+        handleSearch(lastSearch);
+        localStorage.removeItem("lastSearch");
+      }
     };
     init();
   }, []);
 
-  // Search Spotify
   const handleSearch = async (query) => {
-    if (!query) return;
+    localStorage.setItem("lastSearch", query); // save search before redirect
     const results = await Spotify.search(query);
-    setSearchResults(results);
+
+    // Filter out duplicates already in playlist
+    const filteredResults = results.filter(
+      (track) => !playlistTracks.find((t) => t.id === track.id)
+    );
+    setSearchResults(filteredResults);
   };
 
-  // Add track to playlist
   const addTrack = (track) => {
     if (!playlistTracks.find((t) => t.id === track.id)) {
       setPlaylistTracks([...playlistTracks, track]);
     }
   };
 
-  // Remove track from playlist
   const removeTrack = (track) => {
     setPlaylistTracks(playlistTracks.filter((t) => t.id !== track.id));
   };
 
-  // Save playlist to Spotify
   const savePlaylist = async () => {
     if (!token) {
       alert("Log in to Spotify to save your playlist");
       return;
     }
-    if (!playlistTracks.length) {
-      alert("Add tracks to your playlist first!");
-      return;
-    }
-
+    setIsSaving(true);
     const trackUris = playlistTracks.map((t) => t.uri);
     await Spotify.savePlaylist(playlistName || "New Playlist", trackUris);
-
-    // Reset playlist
+    setIsSaving(false);
+    setPlaylistName("");
     setPlaylistTracks([]);
-    setPlaylistName("My Playlist");
-    alert("Playlist saved to Spotify!");
   };
 
   return (
@@ -64,13 +81,11 @@ export default function App() {
       <h1 className="app-title">Jammming</h1>
 
       <div className="main-content">
-        {/* Left: Search */}
         <div className="left-column">
           <SearchBar onSearch={handleSearch} />
           <SearchResults searchResults={searchResults} onAdd={addTrack} />
         </div>
 
-        {/* Right: Playlist */}
         <div className="right-column">
           <Playlist
             playlistName={playlistName}
@@ -79,13 +94,15 @@ export default function App() {
             onRemove={removeTrack}
             onSave={savePlaylist}
           />
+          {isSaving && <div className="loading">🎵 Saving your playlist...</div>}
         </div>
       </div>
 
-      {/* Only show login button if no token */}
       {!token && (
         <div className="spotify-login-section">
-          <button onClick={() => Spotify.getAccessToken()}>Log in to Spotify</button>
+          <button onClick={() => Spotify.getAccessToken()}>
+            Log in to Spotify
+          </button>
           <p>You need to log in to Spotify to save playlists.</p>
         </div>
       )}

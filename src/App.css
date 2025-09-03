@@ -1,3 +1,4 @@
+
 /* Root container */
 .app-container {
   width: 100vw;
@@ -6,11 +7,14 @@
   font-family: Arial, sans-serif;
   text-align: center;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a;
 }
 
 /* App title */
 .app-title {
-  color: #4b0082;
+  color: #5d019f;
   font-size: 3rem;
   margin-bottom: 40px;
 }
@@ -18,7 +22,7 @@
 /* Two-column layout */
 .main-content {
   display: flex;
-  justify-content: center; /* center columns horizontally */
+  justify-content: center;
   align-items: flex-start;
   gap: 50px;
   width: 100%;
@@ -34,7 +38,7 @@
   gap: 15px;
   flex: 1;
   min-width: 300px;
-  max-width: 600px; /* keeps columns balanced */
+  max-width: 600px;
 }
 
 /* H2 titles for Results and Playlist */
@@ -44,7 +48,6 @@
 .search-results h2 {
   margin-bottom: 10px;
   font-size: 1.5rem;
-  color: #4b0082;
   text-align: center;
   color: white;
 }
@@ -60,6 +63,8 @@
   padding: 5px;
   font-size: 1rem;
   min-width: 150px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .search-button {
@@ -98,6 +103,8 @@
   padding: 5px;
   font-size: 1rem;
   min-width: 150px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .playlist-save-button {
@@ -121,6 +128,13 @@
   cursor: not-allowed;
 }
 
+/* Loading message */
+.loading {
+  margin-top: 10px;
+  color: #fff;
+  font-style: italic;
+}
+
 /* SearchResults */
 .search-results {
   padding: 0;
@@ -138,6 +152,7 @@
   padding-right: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Individual track rows */
@@ -147,16 +162,30 @@
   align-items: center;
   padding: 5px 10px;
   border-bottom: 1px solid #eee;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .track-row:last-child {
   border-bottom: none;
 }
 
+.track-row div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 180px;
+}
+
 /* Track add/remove buttons */
-.track-button {
-  width: 30px;
-  height: 30px;
+.track-button,
+.audio-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
   font-size: 1rem;
   background-color: #4b0082;
   color: white;
@@ -164,13 +193,17 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  display: flex;           
-  align-items: center;      
-  justify-content: center;  
 }
 
-.track-button:hover {
+.track-button:hover,
+.audio-preview:hover {
   background-color: #3a0066;
+}
+
+/* Audio preview button */
+.audio-preview {
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 /* Spotify login section */
